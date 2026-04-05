@@ -4,10 +4,9 @@ Text goes in, physics happens, letters pile up. A stick figure claims the summit
 
 A just-for-fun experiment with **Svelte 5** runes and **Matter.js** 2D physics — exploring how to make text disintegrate letter by letter and fall with realistic gravity, collisions, and friction.
 
-## Demo
+**[Live Demo](https://kirshway.github.io/todo-crumble/)**
 
-<!-- Replace with your recording: gif, mp4, or a link to a hosted video -->
-<!-- Recommended: use a gif (< 10MB) or link to a video for larger recordings -->
+## Demo
 
 ![todo-crumble demo](.github/assets/demo.gif)
 
