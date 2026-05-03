@@ -5,13 +5,32 @@ export type Todo = {
 	text: string;
 };
 
+export type CompletedTodo = {
+	todo: Todo;
+	index: number;
+};
+
 export type FallingLetter = {
 	id: string;
+	groupId: string;
 	char: string;
 	body: Matter.Body;
 	fontSize: number;
+	targetX: number;
+	targetY: number;
+	restore?: {
+		startedAt: number;
+		delay: number;
+		duration: number;
+		fromX: number;
+		fromY: number;
+		fromAngle: number;
+		popX: number;
+		popY: number;
+		progress: number;
+	};
 };
 
 export type DropLettersApi = {
-	dropLetters: (text: string, x: number, y: number) => void;
+	dropLetters: (completed: CompletedTodo, element: HTMLElement) => void;
 };

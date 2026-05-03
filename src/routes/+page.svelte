@@ -1,7 +1,8 @@
 <script lang="ts">
+	import { tick } from 'svelte';
 	import TodoList from '$lib/components/TodoList.svelte';
 	import FallingLetters from '$lib/components/FallingLetters.svelte';
-	import type { Todo, DropLettersApi } from '$lib/types';
+	import type { CompletedTodo, Todo, DropLettersApi } from '$lib/types';
 
 	let todos: Todo[] = $state([
 		{ id: crypto.randomUUID(), text: 'Tensorlake Explorations #1' },
@@ -20,21 +21,50 @@
 	]);
 
 	let dropLettersFn: DropLettersApi['dropLetters'] | null = null;
+	let restoringTodoIds: Set<string> = $state(new Set());
+	const todoTextElements = new Map<string, HTMLElement>();
 
 	const handlePhysicsReady = (api: DropLettersApi) => {
 		dropLettersFn = api.dropLetters;
 	};
 
 	const handleComplete = (todo: Todo, element: HTMLElement) => {
-		const rect = element.getBoundingClientRect();
-
 		if (dropLettersFn) {
-			dropLettersFn(todo.text, rect.left, rect.top);
+			dropLettersFn({ todo, index: todos.findIndex((t) => t.id === todo.id) }, element);
 		}
 	};
 
 	const handleRemove = (todo: Todo) => {
 		todos = todos.filter((t) => t.id !== todo.id);
+	};
+
+	const restoreTodoAtIndex = ({ todo, index }: CompletedTodo) => {
+		if (todos.some((t) => t.id === todo.id)) return;
+
+		const nextTodos = [...todos];
+		nextTodos.splice(Math.max(0, Math.min(index, nextTodos.length)), 0, todo);
+		todos = nextTodos;
+	};
+
+	const handlePrepareRestore = async (completed: CompletedTodo) => {
+		restoreTodoAtIndex(completed);
+		restoringTodoIds = new Set(restoringTodoIds).add(completed.todo.id);
+		await tick();
+		return todoTextElements.get(completed.todo.id) ?? null;
+	};
+
+	const handleRestoreComplete = ({ todo }: CompletedTodo) => {
+		const nextRestoringIds = new Set(restoringTodoIds);
+		nextRestoringIds.delete(todo.id);
+		restoringTodoIds = nextRestoringIds;
+	};
+
+	const handleTextMount = (todo: Todo, element: HTMLElement | null) => {
+		if (element) {
+			todoTextElements.set(todo.id, element);
+		} else {
+			todoTextElements.delete(todo.id);
+		}
 	};
 </script>
 
@@ -43,8 +73,18 @@
 </svelte:head>
 
 <div class="app">
-	<TodoList {todos} onComplete={handleComplete} onRemove={handleRemove} />
-	<FallingLetters onReady={handlePhysicsReady} />
+	<TodoList
+		{todos}
+		{restoringTodoIds}
+		onComplete={handleComplete}
+		onRemove={handleRemove}
+		onTextMount={handleTextMount}
+	/>
+	<FallingLetters
+		onReady={handlePhysicsReady}
+		onPrepareRestore={handlePrepareRestore}
+		onRestoreComplete={handleRestoreComplete}
+	/>
 </div>
 
 <style>

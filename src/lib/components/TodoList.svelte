@@ -4,17 +4,25 @@
 
 	type Props = {
 		todos: Todo[];
+		restoringTodoIds?: Set<string>;
 		onComplete: (todo: Todo, element: HTMLElement) => void;
 		onRemove: (todo: Todo) => void;
+		onTextMount?: (todo: Todo, element: HTMLElement | null) => void;
 	};
 
-	let { todos, onComplete, onRemove }: Props = $props();
+	let { todos, restoringTodoIds = new Set(), onComplete, onRemove, onTextMount }: Props = $props();
 </script>
 
 <div class="todo-list-container">
 	<ul class="todo-list">
 		{#each todos as todo (todo.id)}
-			<TodoItem {todo} {onComplete} {onRemove} />
+			<TodoItem
+				{todo}
+				restoring={restoringTodoIds.has(todo.id)}
+				{onComplete}
+				{onRemove}
+				{onTextMount}
+			/>
 		{/each}
 	</ul>
 </div>

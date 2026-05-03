@@ -3,11 +3,13 @@
 
 	type Props = {
 		todo: Todo;
+		restoring?: boolean;
 		onComplete: (todo: Todo, element: HTMLElement) => void;
 		onRemove: (todo: Todo) => void;
+		onTextMount?: (todo: Todo, element: HTMLElement | null) => void;
 	};
 
-	let { todo, onComplete, onRemove }: Props = $props();
+	let { todo, restoring = false, onComplete, onRemove, onTextMount }: Props = $props();
 
 	let textEl: HTMLSpanElement;
 	let itemEl: HTMLLIElement;
@@ -28,16 +30,27 @@
 			onRemove(todo);
 		}
 	};
+
+	$effect(() => {
+		if (!textEl) return;
+
+		onTextMount?.(todo, textEl);
+
+		return () => {
+			onTextMount?.(todo, null);
+		};
+	});
 </script>
 
 <li
 	bind:this={itemEl}
 	class="todo-item"
 	class:collapsing
+	class:restoring
 	ontransitionend={handleTransitionEnd}
 >
 	<label class="todo-label">
-		<input type="checkbox" {checked} onchange={handleChange} disabled={checked} />
+		<input type="checkbox" {checked} onchange={handleChange} disabled={checked || restoring} />
 		<span class="todo-text" class:completed={checked} bind:this={textEl}>
 			{todo.text}
 		</span>
@@ -61,6 +74,11 @@
 		max-height: 0;
 		padding-top: 0;
 		padding-bottom: 0;
+	}
+
+	.todo-item.restoring .todo-label {
+		opacity: 0;
+		pointer-events: none;
 	}
 
 	.todo-label {
