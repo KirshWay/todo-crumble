@@ -5,11 +5,6 @@ on:
     branches: ['main']
   workflow_dispatch:
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
 concurrency:
   group: 'pages'
   cancel-in-progress: true
@@ -17,32 +12,48 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/setup@v2
         with:
-          version: latest
+          runtime: node@24
+          cache: true
+          install: false
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
 
-      - run: pnpm install
+      - run: pnpm run check
+
+      - run: pnpm run lint
+
+      - run: pnpm run fmt
+
+      - uses: actions/configure-pages@v6
 
       - run: pnpm run build
 
-      - uses: actions/upload-pages-artifact@v3
+      - name: Inspect base-path artifact
+        run: |
+          test -f build/index.html
+          test -f build/404.html
+          grep -q '/todo-crumble/' build/index.html
+
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: './build'
 
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - uses: actions/deploy-pages@v4
+      - uses: actions/deploy-pages@v5
         id: deployment
