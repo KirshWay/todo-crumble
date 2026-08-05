@@ -94,30 +94,43 @@
 		width: 22px;
 		height: 22px;
 		min-width: 22px;
-		border: 2px solid #bbb;
+		border: 2px solid var(--color-checkbox);
 		border-radius: 50%;
 		cursor: pointer;
 		flex-shrink: 0;
-		transition: border-color 0.2s;
+		transition:
+			border-color 0.2s,
+			background-color 0.2s;
 		padding: 0;
 		margin: 0;
 	}
 
 	.todo-label input[type='checkbox']:checked {
-		border-color: #5dc2af;
-		background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%235dc2af' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E")
-			no-repeat center;
+		border-color: var(--color-accent);
+		background: var(--checkmark-image) no-repeat center;
+	}
+
+	.todo-label input[type='checkbox']:focus-visible {
+		outline: 3px solid var(--color-focus-ring);
+		outline-offset: 3px;
 	}
 
 	.todo-text {
 		font-size: 17px;
-		color: #222;
+		color: var(--color-text);
 		transition: color 0.15s;
 		word-break: break-word;
 	}
 
 	.completed {
-		color: #ccc;
+		color: var(--color-text-completed);
 		text-decoration: line-through;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.todo-label input[type='checkbox'],
+		.todo-text {
+			transition: none;
+		}
 	}
 </style>

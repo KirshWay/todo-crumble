@@ -6,15 +6,73 @@
 	padding: 0;
 }
 
+:root {
+	color-scheme: light;
+	--color-bg: #f7f8f5;
+	--color-text: #252824;
+	--color-text-completed: #6d736b;
+	--color-checkbox: #737a70;
+	--color-accent: #14745f;
+	--color-focus-ring: #14745f;
+	--color-control-bg: rgb(255 255 255 / 0.88);
+	--color-control-hover: #ffffff;
+	--color-control-pressed: #e7ebe5;
+	--color-control-border: rgb(45 55 47 / 0.16);
+	--color-control-border-hover: rgb(45 55 47 / 0.28);
+	--color-control-icon: #343a34;
+	--color-restore-bg: rgb(255 255 255 / 0.9);
+	--color-restore-hover: #ffffff;
+	--color-restore-icon: #616861;
+	--color-restore-icon-hover: #252824;
+	--shadow-control: 0 4px 14px rgb(31 38 32 / 0.08);
+	--shadow-control-hover: 0 7px 20px rgb(31 38 32 / 0.13);
+	--shadow-restore: 0 6px 18px rgb(0 0 0 / 0.1);
+	--checkmark-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%2314745f' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
+}
+
+:root[data-theme='dark'] {
+	color-scheme: dark;
+	--color-bg: #151815;
+	--color-text: #eef1eb;
+	--color-text-completed: #9aa198;
+	--color-checkbox: #878f84;
+	--color-accent: #69d9b7;
+	--color-focus-ring: #75e3c1;
+	--color-control-bg: rgb(39 44 39 / 0.9);
+	--color-control-hover: #343a34;
+	--color-control-pressed: #1f241f;
+	--color-control-border: rgb(238 241 235 / 0.15);
+	--color-control-border-hover: rgb(238 241 235 / 0.28);
+	--color-control-icon: #eef1eb;
+	--color-restore-bg: rgb(39 44 39 / 0.92);
+	--color-restore-hover: #343a34;
+	--color-restore-icon: #b7beb4;
+	--color-restore-icon-hover: #f5f7f2;
+	--shadow-control: 0 5px 18px rgb(0 0 0 / 0.28);
+	--shadow-control-hover: 0 8px 24px rgb(0 0 0 / 0.38);
+	--shadow-restore: 0 6px 18px rgb(0 0 0 / 0.34);
+	--checkmark-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%2369d9b7' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
+}
+
 html,
 body {
 	height: 100%;
 	overflow: hidden;
 	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-	background: #fff;
-	color: #222;
+	background: var(--color-bg);
+	color: var(--color-text);
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	-webkit-tap-highlight-color: transparent;
 	touch-action: manipulation;
+	transition:
+		background-color 0.25s ease,
+		color 0.25s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	html,
+	body {
+		transition: none;
+	}
 }

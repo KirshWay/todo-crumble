@@ -2,6 +2,7 @@
 	import { tick } from 'svelte';
 	import TodoList from '$lib/components/TodoList.svelte';
 	import FallingLetters from '$lib/components/FallingLetters.svelte';
+	import ThemeToggle from '$lib/components/ThemeToggle.svelte';
 	import type { CompletedTodo, Todo, DropLettersApi } from '$lib/types';
 
 	let todos: Todo[] = $state([
@@ -73,6 +74,9 @@
 </svelte:head>
 
 <div class="app">
+	<header class="app-header">
+		<ThemeToggle />
+	</header>
 	<TodoList
 		{todos}
 		{restoringTodoIds}
@@ -91,8 +95,28 @@
 	.app {
 		display: flex;
 		flex-direction: column;
+		height: 100vh;
+		height: 100dvh;
 		min-height: 100vh;
-		background: #fff;
+		background: var(--color-bg);
 		position: relative;
+		transition: background-color 0.25s ease;
+	}
+
+	.app-header {
+		display: flex;
+		justify-content: flex-end;
+		flex: none;
+		padding:
+			max(12px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right)) 4px
+			max(12px, env(safe-area-inset-left));
+		position: relative;
+		z-index: 200;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.app {
+			transition: none;
+		}
 	}
 </style>

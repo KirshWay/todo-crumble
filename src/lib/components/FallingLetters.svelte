@@ -534,7 +534,7 @@
 		viewBox="0 0 24 52"
 		style="opacity: 0"
 	>
-		<circle cx="12" cy="5" r="4" fill="#222" stroke="none" />
+		<circle cx="12" cy="5" r="4" fill="currentColor" stroke="none" />
 		<line x1="12" y1="9" x2="12" y2="30" />
 		<line bind:this={leftArmEl} x1="12" y1="16" x2="3" y2="24" />
 		<line bind:this={rightArmEl} x1="12" y1="16" x2="21" y2="24" />
@@ -577,7 +577,7 @@
 		font-family: 'Helvetica Neue', Arial, sans-serif;
 		font-size: 18px;
 		font-weight: 400;
-		color: #222;
+		color: var(--color-text);
 		line-height: 1;
 		will-change: transform;
 	}
@@ -592,7 +592,7 @@
 	}
 
 	.restore-lines line {
-		stroke: #222;
+		stroke: var(--color-text);
 		stroke-width: 1.1;
 		stroke-linecap: round;
 		vector-effect: non-scaling-stroke;
@@ -603,7 +603,8 @@
 		top: 0;
 		left: 0;
 		pointer-events: none;
-		stroke: #222;
+		color: var(--color-text);
+		stroke: currentColor;
 		fill: none;
 		stroke-width: 2.5;
 		stroke-linecap: round;
@@ -623,9 +624,9 @@
 		place-items: center;
 		border: 0;
 		border-radius: 50%;
-		background: rgb(255 255 255 / 0.82);
-		color: #777;
-		box-shadow: 0 6px 18px rgb(0 0 0 / 0.1);
+		background: var(--color-restore-bg);
+		color: var(--color-restore-icon);
+		box-shadow: var(--shadow-restore);
 		cursor: pointer;
 		opacity: 0;
 		pointer-events: none;
@@ -638,8 +639,17 @@
 	}
 
 	.restore-button:hover {
-		background: rgb(255 255 255 / 0.95);
-		color: #222;
+		background: var(--color-restore-hover);
+		color: var(--color-restore-icon-hover);
+	}
+
+	.restore-button:focus-visible {
+		outline: 3px solid var(--color-focus-ring);
+		outline-offset: 3px;
+	}
+
+	.restore-button:active {
+		filter: brightness(0.92);
 	}
 
 	.restore-button svg {
@@ -648,5 +658,12 @@
 		stroke-width: 2.4;
 		stroke-linecap: round;
 		stroke-linejoin: round;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.stick-figure,
+		.restore-button {
+			transition: none;
+		}
 	}
 </style>
