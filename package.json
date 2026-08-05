@@ -18,17 +18,18 @@
   "devDependencies": {
     "@sveltejs/adapter-auto": "7.0.1",
     "@sveltejs/adapter-static": "3.0.10",
-    "@sveltejs/kit": "2.56.1",
-    "@sveltejs/vite-plugin-svelte": "6.2.4",
+    "@sveltejs/kit": "2.70.2",
+    "@sveltejs/vite-plugin-svelte": "7.2.0",
     "@types/matter-js": "0.20.2",
-    "oxfmt": "0.43.0",
-    "oxlint": "1.58.0",
-    "svelte": "5.55.1",
-    "svelte-check": "4.4.6",
+    "oxfmt": "0.62.0",
+    "oxlint": "1.77.0",
+    "svelte": "5.56.8",
+    "svelte-check": "4.7.4",
     "typescript": "5.9.3",
-    "vite": "7.3.1"
+    "vite": "8.2.0"
   },
   "dependencies": {
     "matter-js": "0.20.0"
-  }
+  },
+  "packageManager": "pnpm@11.20.0+sha512.9a6f330a95b66446ea088faf1521405a8a01f07fde7124cc9958dfed52d4bb436737e65b08f85f37b46fcba375092558ac51262b816844b22f63406ed166bfee"
 }
